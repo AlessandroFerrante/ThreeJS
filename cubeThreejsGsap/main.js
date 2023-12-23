@@ -3,13 +3,15 @@ import gsap from 'gsap'
 console.log(THREE)
 
 const scene =  new THREE.Scene();
-
-const geometry = new THREE.BoxGeometry(1, 1, 1)
+const geometry1 = new THREE.SphereGeometry(1, 15, 15)
+const geometry2 = new THREE.ConeGeometry(1, 2, 110, 1)
+const geometry3 = new THREE.BoxGeometry(1, 1, 1,2,1,2)
 const material  = new THREE.LineBasicMaterial({color: 0x00ff00})
-const mesh = new THREE.Line(geometry, material)
-const mesh2 = mesh.clone()
-const mesh3 = mesh.clone()
-
+const mesh = new THREE.Line(geometry1, material)
+const mesh2 = new THREE.Line(geometry2, material)
+const mesh3 = new THREE.Line(geometry3, material)
+ 
+ 
 scene.add(mesh, mesh2, mesh3);
 
 const _window = {
@@ -25,7 +27,7 @@ document.body.appendChild( renderer.domElement)
 mesh2.position.x = -2;
 mesh3.position.x = 2;
 camera.position.z = 4;
-
+  
 const group = new THREE.Group()
 group.add(mesh2, mesh3)
 scene.add(group)
@@ -36,7 +38,7 @@ mesh2.scale.multiplyScalar(0)
 mesh3.scale.multiplyScalar(0)
 renderer.render(scene, camera)
 
-const vel = 0.5
+let vel = 0.5
 const clock = new THREE.Clock()
 
 function tic() {
@@ -74,5 +76,10 @@ window.addEventListener('click', pop)
 window.addEventListener('keypress', 
 function(){
   //requestAnimationFrame(tic)
-  pop()
+  vel += 3;
 })
+window.addEventListener('dblclick', 
+function(){
+  //requestAnimationFrame(tic)
+  vel = 0.5;
+}) 
