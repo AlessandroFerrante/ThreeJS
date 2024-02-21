@@ -16,9 +16,12 @@ const mesh = new THREE.LineLoop(geometry, material);
 
 scene.add(mesh);
 
+const displayWidth = window.innerWidth;
+const displayHeight = window.innerHeight;
+
 const temp = {
-  width: 1024,
-  height: 720
+  width: displayWidth,
+  height: displayHeight
 }
 
 // camera prospettica 
@@ -26,16 +29,27 @@ const temp = {
 // fov cioè l'angolo verticale dell'inquadratura, 
 // rapporto tra altezza e larghezza, 
 // near plane cioè il piano da dove inzia a vedere, far plane cioè il piano limite di visione)
-const camera = new THREE.PerspectiveCamera(75, temp.width/temp.height, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(75, temp.width / temp.height, 0.1, 1000);
 // renderizza i frame secondo le misure
 const renderer = new THREE.WebGLRenderer()
 renderer.setSize(temp.width, temp.height)
 
 // aggiunge al dom l'immaggine renderizzata dal render, chiamto canvas
 document.body.appendChild( renderer.domElement )
+function updateDimensions() {
+  temp.width = window.innerWidth;
+  temp.height = window.innerHeight;
 
+  camera.aspect = temp.width / temp.height;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(temp.width, temp.height);
+}
+window.addEventListener('resize', updateDimensions, false);
+
+updateDimensions();
 // sposta la camera che altrimenti rimarrebbe in posizone 0 cioè dentro il cubo
-camera.position.z = 4
+camera.position.z = 4;
 /*
 mesh.rotation.y = Math.PI / 4
 mesh.rotation.x = Math.PI / 4
@@ -74,7 +88,8 @@ mesh2.rotation.order = 'ZXY'
 mesh.quaternion.copy(new THREE.Quaternion(-0.1999, -1 , 0, 0))
 console.log(mesh.rotation)
 
-camera.position.y = 1;
+camera.position.y = 0;
+camera.position.x = -1/2;
 //camera.position.set(-2, 1, 2)
 
 const group = new THREE.Group();
